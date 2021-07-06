@@ -1,5 +1,7 @@
 package com.wccgroup.wccgroupjava.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,16 +27,27 @@ public class GeographicDistanceController {
 	@Autowired
 	private PostCodeService postCodeService;
 	
+	/**
+	 * get the the postal code, latitude and longitude (both in degrees) and the distance between the two locations (in kilometers)
+	 * @param postCode
+	 * @return @PostCodeResDTO responseEntity postCode response DTO 
+	 */
 	@GetMapping(path = "/postCode", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PostCodeResDTO> postalCodes(@RequestBody PostCodeReqDTO postCode) {
+	public ResponseEntity<PostCodeResDTO> postalCodes(@Valid @RequestBody PostCodeReqDTO postCode) {
 		if (!postCodeService.retrieveDistance(postCode).isEmpty()) {
 			return ResponseEntity.ok(postCodeService.retrieveDistance(postCode).get());
 		}
 		throw new ResponseStatusException(HttpStatus.NO_CONTENT, POSTCODE_NOT_FOUND);
 	}
 	
+	/**
+	 * Update the postcode values latitutde, longtitude or postcode
+	 * @param String postCode
+	 * @param reqBody @PostCodeReqDTO
+	 * @return @UpdatePostCodeResDTO postCode value
+	 */
 	@PutMapping(path = "/postCode/{postCode}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UpdatePostCodeResDTO> updatePostCode(@PathVariable String postCode, @RequestBody PostCodeReqDTO reqBody) {
+	public ResponseEntity<UpdatePostCodeResDTO> updatePostCode(@PathVariable String postCode, @Valid @RequestBody PostCodeReqDTO reqBody) {
 		if(!postCodeService.isPostCodeExist(postCode)) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, POSTCODE_NO_CONTENT);
 		}

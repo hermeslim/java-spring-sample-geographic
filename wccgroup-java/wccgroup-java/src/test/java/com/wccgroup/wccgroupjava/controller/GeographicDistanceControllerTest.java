@@ -2,6 +2,7 @@ package com.wccgroup.wccgroupjava.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Optional;
 
@@ -73,6 +74,7 @@ public class GeographicDistanceControllerTest {
 		postCode.setPostCode2("AB");
 		Mockito.when(mockService.retrieveDistance(postCode)).thenReturn(getResponse());
 		ResponseEntity<PostCodeResDTO> testResult = testCase.postalCodes(postCode);
+		assertNotNull(testResult.getBody(), "Object shouldn't be null");
 		assertEquals(HttpStatus.OK, testResult.getStatusCode());
 	}
 	
