@@ -19,11 +19,11 @@ public class WebSecurityConfig
     protected void configure(HttpSecurity http) throws Exception {
             http
              .csrf().disable()
-//             .headers().frameOptions().disable() 
              .authorizeRequests().anyRequest().authenticated()
              .and()
              .httpBasic().and()
              .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
+            http.headers().frameOptions().disable(); // h2 console will have issue 
         }
       
 }

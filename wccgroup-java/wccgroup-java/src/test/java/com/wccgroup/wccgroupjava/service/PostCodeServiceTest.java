@@ -16,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.wccgroup.wccgroupjava.dto.PostCodeReqDTO;
 import com.wccgroup.wccgroupjava.dto.PostCodeResDTO;
+import com.wccgroup.wccgroupjava.repository.PostCodeLogRepository;
 import com.wccgroup.wccgroupjava.repository.PostCodeRepository;
 
 /**
@@ -30,6 +31,9 @@ public class PostCodeServiceTest {
 
 	@MockBean
 	private PostCodeRepository mockRepo;
+	
+	@MockBean
+	private PostCodeLogRepository mockLogRepo;
 	
 	@InjectMocks
 	@Autowired

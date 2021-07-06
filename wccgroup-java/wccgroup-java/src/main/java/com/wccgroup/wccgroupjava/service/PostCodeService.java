@@ -11,6 +11,8 @@ import com.wccgroup.wccgroupjava.dto.PostCodeReqDTO;
 import com.wccgroup.wccgroupjava.dto.PostCodeResDTO;
 import com.wccgroup.wccgroupjava.dto.UpdatePostCodeResDTO;
 import com.wccgroup.wccgroupjava.entity.PostCode;
+import com.wccgroup.wccgroupjava.entity.PostCodeLog;
+import com.wccgroup.wccgroupjava.repository.PostCodeLogRepository;
 import com.wccgroup.wccgroupjava.repository.PostCodeRepository;
 
 @Service
@@ -24,6 +26,9 @@ public class PostCodeService {
 	
 	@Autowired
 	private PostCodeRepository postCodeRepo;
+	
+	@Autowired
+	private PostCodeLogRepository logRepo;
 
 	/**
 	 * get distance, latitude and longtitude for both postcodes
@@ -31,7 +36,8 @@ public class PostCodeService {
 	 * @return Optional<PostCodeResDTO>
 	 */
 	public Optional<PostCodeResDTO> retrieveDistance(PostCodeReqDTO postCode) {
-		
+		log.info("get post code1 : " + postCode.getPostCode1() + " get post code2 : " + postCode.getPostCode2());
+		logPostCode(postCode);
 		Optional<PostCodeResDTO> result = postCodeRepo.findByPostCode(postCode.getPostCode1(), postCode.getPostCode2());
 		if (result.isPresent()) {
 			PostCodeResDTO postCodeResponse = result.get();
@@ -70,5 +76,11 @@ public class PostCodeService {
 		return postCodeRepo.existsByPostCode(postCode);
 	}
 		
-
+	private void logPostCode(PostCodeReqDTO postCode) {
+		PostCodeLog entity = new PostCodeLog();
+		entity.setPostCode1(postCode.getPostCode1());
+		entity.setPostCode2(postCode.getPostCode2());
+		logRepo.save(entity);
+		
+	}
 }
